@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Asignaturas</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* MENÚ LATERAL */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 230px;
+            height: 100vh;
+            background-color: #1e3a5f;
+            color: white;
+            padding: 25px 15px;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.activo {
+            background-color: #2f5d8c;
+        }
+
+        /* CONTENIDO */
+
+        .contenido {
+            margin-left: 230px;
+            padding: 30px;
+        }
+
+        .encabezado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .encabezado h1 {
+            color: #1e3a5f;
+        }
+
+        /* BOTÓN AGREGAR */
+
+        .btn-agregar {
+            background-color: #1e8e5a;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-agregar:hover {
+            background-color: #157347;
+        }
+
+        /* BUSCADOR */
+
+        .buscador {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .buscador input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        /* TABLA */
+
+        .tabla-contenedor {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #1e3a5f;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        /* BOTONES */
+
+        .btn-editar {
+            background-color: #f0ad4e;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .btn-eliminar {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-editar:hover {
+            background-color: #ec971f;
+        }
+
+        .btn-eliminar:hover {
+            background-color: #c9302c;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 700px) {
+
+            .sidebar {
+                width: 180px;
+            }
+
+            .contenido {
+                margin-left: 180px;
+                padding: 20px;
+            }
+
+            .encabezado {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- MENÚ LATERAL -->
+
+    <aside class="sidebar">
+
+        <h2>Mi Colegio</h2>
+
+        <a href="index.html">
+            🏠 Inicio
+        </a>
+
+        <a href="estudiantes.html">
+            👨‍🎓 Estudiantes
+        </a>
+
+        <a href="docentes.html">
+            👨‍🏫 Docentes
+        </a>
+
+        <a href="asignaturas.html" class="activo">
+            📚 Asignaturas
+        </a>
+
+        <a href="cursos.html">
+            🏫 Cursos
+        </a>
+
+        <a href="reportes.html">
+            📊 Reportes
+        </a>
+
+        <a href="configuracion.html">
+            ⚙️ Configuración
+        </a>
+
+    </aside>
+
+
+    <!-- CONTENIDO -->
+
+    <main class="contenido">
+
+
+        <!-- ENCABEZADO -->
+
+        <div class="encabezado">
+
+            <h1>📚 Asignaturas</h1>
+
+            <button class="btn-agregar">
+                + Agregar asignatura
+            </button>
+
+        </div>
+
+
+        <!-- BUSCADOR -->
+
+        <div class="buscador">
+
+            <input
+                type="text"
+                placeholder="🔎 Buscar asignatura por nombre, código o docente..."
+            >
+
+        </div>
+
+
+        <!-- TABLA -->
+
+        <div class="tabla-contenedor">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Código</th>
+                        <th>Asignatura</th>
+                        <th>Docente</th>
+                        <th>Curso</th>
+                        <th>Horario</th>
+                        <th>Acciones</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    <tr>
+
+                        <td>MAT001</td>
+
+                        <td>Matemáticas</td>
+
+                        <td>Juan Pérez</td>
+
+                        <td>10° A</td>
+
+                        <td>Lunes 7:00 AM</td>
+
+                        <td>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                            <button class="btn-eliminar">
+                                Eliminar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>LEN002</td>
+
+                        <td>Lengua Castellana</td>
+
+                        <td>María Gómez</td>
+
+                        <td>10° A</td>
+
+                        <td>Martes 8:00 AM</td>
+
+                        <td>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                            <button class="btn-eliminar">
+                                Eliminar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>ING003</td>
+
+                        <td>Inglés</td>
+
+                        <td>Laura Rodríguez</td>
+
+                        <td>9° B</td>
+
+                        <td>Miércoles 9:00 AM</td>
+
+                        <td>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                            <button class="btn-eliminar">
+                                Eliminar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>INF004</td>
+
+                        <td>Informática</td>
+
+                        <td>Carlos Martínez</td>
+
+                        <td>11° A</td>
+
+                        <td>Jueves 10:00 AM</td>
+
+                        <td>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                            <button class="btn-eliminar">
+                                Eliminar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td>FIS005</td>
+
+                        <td>Física</td>
+
+                        <td>Andrés López</td>
+
+                        <td>11° B</td>
+
+                        <td>Viernes 8:00 AM</td>
+
+                        <td>
+
+                            <button class="btn-editar">
+                                Editar
+                            </button>
+
+                            <button class="btn-eliminar">
+                                Eliminar
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+
+</body>
+
+</html>
