@@ -1,1 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Notas Comfamiliar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 850px;
+            margin: 30px auto;
+            padding: 0 16px;
+            color: #243247;
+        }
+
+        form {
+            display: grid;
+            gap: 12px;
+            max-width: 420px;
+            margin-bottom: 24px;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        #mensaje {
+            margin: 12px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Notas Comfamiliar</h1>
+    <h2>Registrar nota</h2>
+
+    <form id="formularioNota">
+        <label for="idEstudiante">ID del estudiante</label>
+        <input id="idEstudiante" name="idEstudiante"
+               type="number" min="1" required>
+
+        <label for="idAsignatura">ID de la asignatura</label>
+        <input id="idAsignatura" name="idAsignatura"
+               type="number" min="1" required>
+
+        <label for="nota">Calificación (0 a 5)</label>
+        <input id="nota" name="nota" type="number"
+               min="0" max="5" step="0.1" required>
+
+        <label for="periodo">Periodo académico</label>
+        <input id="periodo" name="periodo"
+               type="text" maxlength="30" required>
+
+        <button type="submit">Guardar nota</button>
+    </form>
+
+    <p id="mensaje" role="status"></p>
+
+    <h2>Notas registradas</h2>
+    <button id="actualizar" type="button">
+        Actualizar listado
+    </button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Estudiante</th>
+                <th>Asignatura</th>
+                <th>Nota</th>
+                <th>Periodo</th>
+            </tr>
+        </thead>
+        <tbody id="tablaNotas"></tbody>
+    </table>
+
+    <script>
+        const formulario = document.getElementById("formularioNota");
+        const mensaje = document.getElementById("mensaje");
+        const tabla = document.getElementById("tablaNotas");
+
+        // Consulta el listado desde el backend Java.
+        async function cargarNotas() {
+            mensaje.textContent = "Consultando notas...";
+
+            try {
+                const respuesta = await fetch("api/notas");
+
+                if (!respuesta.ok) {
+                    throw new Error("No fue posible consultar las notas.");
+                }
+
+                const notas = await respuesta.json();
+                tabla.replaceChildren();
+
+                notas.forEach(nota => {
+                    const fila = document.createElement("tr");
+
+                    [
+                        nota.idNotas,
+                        nota.idEstudiante,
+                        nota.idAsignatura,
+                        nota.nota,
+                        nota.periodo
+                    ].forEach(valor => {
+                        const celda = document.createElement("td");
+                        celda.textContent = valor ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = notas.length
+                    ? "Listado actualizado."
+                    : "No hay notas registradas.";
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        }
+
+        // Envía los datos del formulario al servlet.
+        formulario.addEventListener("submit", async evento => {
+            evento.preventDefault();
+            mensaje.textContent = "Guardando nota...";
+
+            try {
+                const respuesta = await fetch("api/notas", {
+                    method: "POST",
+                    body: new FormData(formulario)
+                });
+
+                const resultado = await respuesta.json();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        resultado.error || "No se pudo guardar la nota."
+                    );
+                }
+
+                mensaje.textContent = resultado.mensaje;
+                formulario.reset();
+                await cargarNotas();
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        });
+
+        document.getElementById("actualizar")
+            .addEventListener("click", cargarNotas);
+
+        // Carga los registros cuando abre la pantalla.
+        cargarNotas();
+    </script>
+</body>
+</html>
 
